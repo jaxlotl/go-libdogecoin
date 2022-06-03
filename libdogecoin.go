@@ -209,3 +209,7 @@ func w_store_raw_transaction(incoming_raw_tx string) (result int) {
 func foo() {
 	fmt.Println("hello world")
 }
+
+func main() {
+	foo()
+}
