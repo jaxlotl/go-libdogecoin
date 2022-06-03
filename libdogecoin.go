@@ -29,7 +29,6 @@ int intermed_sign_transaction(int txindex, double amounts[], int arr_len, char* 
 */
 import "C"
 import (
-	"fmt"
 	"unsafe"
 )
 
@@ -203,12 +202,4 @@ func w_store_raw_transaction(incoming_raw_tx string) (result int) {
 	c_incoming_raw_tx := C.CString(incoming_raw_tx)
 	result = int(C.store_raw_transaction(c_incoming_raw_tx))
 	return
-}
-
-func main() {
-	w_context_start()
-	fmt.Println("context created...")
-	w_context_stop()
-	fmt.Println("context stopped...")
-	fmt.Println("Done!")
 }
