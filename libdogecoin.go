@@ -1,4 +1,4 @@
-package main
+package libdogecoin
 
 /*
 #cgo CFLAGS: -I${SRCDIR} -I${SRCDIR}/include -I${SRCDIR}/include/dogecoin -I${SRCDIR}/include/dogecoin/crypto -I${SRCDIR}/include/dogecoin/net -I${SRCDIR}/src/secp256k1/include -I${SRCDIR}/src/secp256k1/src -I${SRCDIR}/depends/x86_64-pc-linux-gnu/include -fPIC
