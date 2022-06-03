@@ -1,4 +1,4 @@
-package libdogecoin
+package main
 
 import (
 	"strings"
