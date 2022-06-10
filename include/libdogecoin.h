@@ -1,0 +1,1 @@
+/home/jmcaninch/libdogecoin/include/dogecoin/libdogecoin.h
