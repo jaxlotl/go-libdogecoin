@@ -1,1 +1,12 @@
-/home/jmcaninch/libdogecoin/wrappers/golang/libdogecoin/libdogecoin_test.go
+package libdogecoin
+
+import (
+	"os"
+	"testing"
+)
+
+func TestMain(m *testing.M) {
+	w_context_start()
+	os.Exit(m.Run())
+	w_context_stop()
+}
