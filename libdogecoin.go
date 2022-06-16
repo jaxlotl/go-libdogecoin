@@ -2,7 +2,7 @@ package libdogecoin
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/include -fPIC
-#cgo LDFLAGS: -L${SRCDIR}/.libs -L${SRCDIR}/.libs/libevent -ldogecoin -levent -lm -Wl,-rpath=${SRCDIR}/.libs
+#cgo LDFLAGS: -L${SRCDIR}/.libs -ldogecoin -lm -Wl,-rpath=${SRCDIR}/.libs
 #include "libdogecoin.h"
 
 int intermed_add_output(int txindex, char* destinationaddress, double amount) {
