@@ -93,8 +93,9 @@ func W_verify_hd_master_pub_keypair(wif_privkey_master string, p2pkh_pubkey_mast
 	return
 }
 
-func W_verify_p2pkh_address(p2pkh_pubkey string, len int) (result bool) {
+func W_verify_p2pkh_address(p2pkh_pubkey string) (result bool) {
 	c_p2pkh_pubkey := C.CString(p2pkh_pubkey)
+	len := len(p2pkh_pubkey)
 	c_len := C.uchar(len)
 	if C.verifyP2pkhAddress(c_p2pkh_pubkey, c_len) == 1 {
 		result = true
@@ -149,7 +150,6 @@ func W_get_raw_transaction(tx_index int) (result string) {
 func W_clear_transaction(tx_index int) {
 	c_tx_index := C.int(tx_index)
 	C.clear_transaction(c_tx_index)
-	return
 }
 
 func W_sign_raw_transaction(input_index int, incoming_raw_tx string, script_hex string, sig_hash_type int, amount float64, privkey string) (result string) {
