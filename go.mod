@@ -1,3 +1,3 @@
-module github.com/jaxlotl/go-libdogecoin-sandbox
+module github.com/jaxlotl/go-libdogecoin
 
 go 1.18
