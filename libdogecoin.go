@@ -1,8 +1,11 @@
 package libdogecoin
 
 /*
-#cgo CFLAGS: -I${SRCDIR}/include -fPIC
-#cgo LDFLAGS: -L${SRCDIR}/.libs -ldogecoin -lm -Wl,-rpath=${SRCDIR}/.libs
+#cgo  CFLAGS: -I${SRCDIR}/include -fPIC
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/build/linux/amd64 -ldogecoin
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/build/linux/arm64 -ldogecoin
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/build/darwin/amd64 -ldogecoin
+#cgo windows,386 LDFLAGS: -L${SRCDIR}/build/windows/386 -ldogecoin
 #include "libdogecoin.h"
 
 int intermed_add_output(int txindex, char* destinationaddress, double amount) {
