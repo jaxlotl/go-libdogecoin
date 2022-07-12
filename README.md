@@ -1,2 +1,2 @@
 # go-libdogecoin
-Go bindings for libdogecoin interface.
+Go bindings for libdogecoin interface. 
