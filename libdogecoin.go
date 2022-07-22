@@ -2,7 +2,7 @@ package libdogecoin
 
 /*
 #cgo  CFLAGS: -I${SRCDIR}/include -fPIC
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/build/linux/amd64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/linux/amd64
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/build/linux/amd64 -ldogecoin -levent -lm -Wl,-rpath,${SRCDIR}/build/linux/amd64
 #cgo linux,arm64 LDFLAGS: -L${SRCDIR}/build/linux/arm64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/linux/arm64
 #cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/build/darwin/amd64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/darwin/amd64
 #cgo windows,amd64 LDFLAGS: -L${SRCDIR}/build/windows/amd64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/windows/amd64
