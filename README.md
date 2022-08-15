@@ -1,2 +1,2 @@
 # go-libdogecoin
-Go bindings for libdogecoin interface. 
+This repository is under construction! Once completed, this will be a go module implementing the libdogecoin interface retrievable with `go get`. 
