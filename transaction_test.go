@@ -44,14 +44,14 @@ var vout_decimal_doge int = 1
 // transaction amounts
 var input1_amt float64 = 2.0
 var input2_amt float64 = 10.0
-var send_amt float64 = 5.0
-var total_utxo_input float64 = 12.0
+var send_amt = "5.0"
+var total_utxo_input = "12.0"
 
 var decimal_input_amt float64 = 119.43536540
-var decimal_send_amt float64 = 119.43310540 // fee of 0.00226 deducted
-var decimal_total_utxo_input float64 = 119.43536540
+var decimal_send_amt = "119.43310540" // fee of 0.00226 deducted
+var decimal_total_utxo_input = "119.43536540"
 
-var fee = 0.00226
+var fee = "0.00226"
 
 // invalid parameters
 var bad_privkey_wif string = "ci5prbqz7jXyFPVWKkHhPq4a9N8Dag3TpeRfuqqC2Nfr7gSqx1fx"
@@ -199,7 +199,7 @@ func TestTransaction(t *testing.T) {
 			t.Errorf("Error while deserializing expected transaction.")
 		}
 		rawhex := W_get_raw_transaction(idx)
-		rawhex = W_sign_raw_transaction(0, rawhex, utxo_scriptpubkey, 1, 2, bad_privkey_wif)
+		rawhex = W_sign_raw_transaction(0, rawhex, utxo_scriptpubkey, 1, bad_privkey_wif)
 		if rawhex != "" {
 			t.Errorf("Bad private key should yield empty transaction.")
 		}
@@ -212,11 +212,11 @@ func TestTransaction(t *testing.T) {
 			t.Errorf("Error while deserializing expected transaction.")
 		}
 		rawhex := W_get_raw_transaction(idx)
-		rawhex = W_sign_raw_transaction(0, rawhex, utxo_scriptpubkey, 1, 2, privkey_wif)
+		rawhex = W_sign_raw_transaction(0, rawhex, utxo_scriptpubkey, 1, privkey_wif)
 		if rawhex != expected_signed_single_input_tx_hex {
 			t.Errorf("Error signing first input.")
 		}
-		rawhex = W_sign_raw_transaction(1, rawhex, utxo_scriptpubkey, 1, 10, privkey_wif)
+		rawhex = W_sign_raw_transaction(1, rawhex, utxo_scriptpubkey, 1, privkey_wif)
 		if rawhex != expected_signed_raw_tx_hex {
 			t.Errorf("Error signing second input.")
 		}
@@ -228,8 +228,8 @@ func TestTransaction(t *testing.T) {
 		if idx == 0 {
 			t.Errorf("Error while deserializing expected transaction.")
 		}
-		var inputs = []float64{input1_amt, input2_amt}
-		if W_sign_transaction(idx, inputs, utxo_scriptpubkey, privkey_wif) == 0 {
+		//var inputs = []float64{input1_amt, input2_amt}
+		if W_sign_transaction(idx, utxo_scriptpubkey, privkey_wif) == 0 {
 			t.Errorf("Error signing transaction.")
 		}
 		if W_get_raw_transaction(idx) != expected_signed_raw_tx_hex {
@@ -256,8 +256,8 @@ func TestTransaction(t *testing.T) {
 		if W_get_raw_transaction(idx) != expected_unsigned_tx_hex {
 			t.Errorf("Returned hex does not match expected hex after making change.")
 		}
-		var inputs = []float64{input1_amt, input2_amt}
-		W_sign_transaction(idx, inputs, utxo_scriptpubkey, privkey_wif)
+		//var inputs = []float64{input1_amt, input2_amt}
+		W_sign_transaction(idx, utxo_scriptpubkey, privkey_wif)
 		if W_get_raw_transaction(idx) != expected_signed_raw_tx_hex {
 			t.Errorf("Returned hex does not match expected hex after signing inputs.")
 		}
@@ -278,8 +278,8 @@ func TestTransaction(t *testing.T) {
 		if W_get_raw_transaction(idx) != expected_unsigned_tx_hex2 {
 			t.Errorf("Returned hex does not match expected hex after making change.")
 		}
-		var inputs = []float64{decimal_input_amt}
-		W_sign_transaction(idx, inputs, utxo_scriptpubkey2, privkey_wif2)
+		//var inputs = []float64{decimal_input_amt}
+		W_sign_transaction(idx, utxo_scriptpubkey2, privkey_wif2)
 		if W_get_raw_transaction(idx) != expected_signed_raw_tx_hex2 {
 			t.Errorf("Returned hex does not match expected hex after signing inputs.")
 		}
