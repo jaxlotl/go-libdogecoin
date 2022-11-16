@@ -1,3 +1,3 @@
-module github.com/jaxlotl/go-libdogecoin
+module github.com/dogeorg/go-libdogecoin
 
 go 1.18
