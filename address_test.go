@@ -148,4 +148,23 @@ func TestAddress(t *testing.T) {
 			t.Errorf("Derived P2PKH address is not valid.")
 		}
 	})
+
+	t.Run("get_derived_hd_address_0_f_0_pub", func(t *testing.T) {
+		priv, _ := W_generate_hd_master_pub_keypair(false)
+		child_pub := W_get_derived_hd_address(priv, 0, false, 0, false)
+		p2pkh := W_generate_derived_hd_pub_key(child_pub)
+		if !W_verify_p2pkh_address(p2pkh) {
+			t.Errorf("Derived P2PKH address is not valid.")
+		}
+	})
+
+	t.Run("get_derived_hd_address_0_f_0_priv", func(t *testing.T) {
+		priv, _ := W_generate_hd_master_pub_keypair(false)
+		child_priv := W_get_derived_hd_address(priv, 0, false, 0, true)
+		p2pkh := W_generate_derived_hd_pub_key(child_priv)
+		if !W_verify_hd_master_pub_keypair(child_priv, p2pkh, false) {
+			t.Errorf("Keypair is not valid.")
+		}
+	})
+
 }

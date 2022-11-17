@@ -54,31 +54,27 @@ func W_generate_derived_hd_pub_key(wif_privkey_master string) (child_p2pkh_pubke
 	return
 }
 
-// TODO: test
-func W_get_derived_hd_address(master_key string, account uint32, is_change bool, address_index uint32, out_private_key bool) (out_address string, ok bool) {
+func W_get_derived_hd_address(master_key string, account uint32, is_change bool, address_index uint32, out_private_key bool) (out_address string) {
 	c_master_key := C.CString(master_key)
 	c_out_address := [128]C.char{}
 	if C.getDerivedHDAddress(c_master_key, (C.uint32_t)(account), (C.bool)(is_change), (C.uint32_t)(address_index), (*C.char)(&c_out_address[0]), (C.bool)(out_private_key)) == 1 {
-		ok = true
+		out_address = C.GoString((*C.char)(&c_out_address[0]))
 	} else {
-		ok = false
+		out_address = ""
 	}
-	out_address = C.GoString((*C.char)(&c_out_address[0]))
 	C.free(unsafe.Pointer(c_master_key))
 	return
 }
 
-// TODO: test
-func W_get_derived_hd_address_by_path(master_key string, derived_path string, out_private_key bool) (out_address string, ok bool) {
+func W_get_derived_hd_address_by_path(master_key string, derived_path string, out_private_key bool) (out_address string) {
 	c_master_key := C.CString(master_key)
 	c_derived_path := C.CString(derived_path)
 	c_out_address := [128]C.char{}
 	if C.getDerivedHDAddressByPath(c_master_key, c_derived_path, (*C.char)(&c_out_address[0]), (C.bool)(out_private_key)) == 1 {
-		ok = true
+		out_address = C.GoString((*C.char)(&c_out_address[0]))
 	} else {
-		ok = false
+		out_address = ""
 	}
-	out_address = C.GoString((*C.char)(&c_out_address[0]))
 	C.free(unsafe.Pointer(c_master_key))
 	C.free(unsafe.Pointer(c_derived_path))
 	return
@@ -221,4 +217,3 @@ func W_store_raw_transaction(incoming_raw_tx string) (result int) {
 	result = int(C.store_raw_transaction(c_incoming_raw_tx))
 	return
 }
-
