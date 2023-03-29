@@ -2,7 +2,7 @@ package libdogecoin
 
 /*
 #cgo  CFLAGS: -I${SRCDIR}/include -fPIC
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/build/linux/amd64 -ldogecoin -levent -lm -Wl,-rpath,${SRCDIR}/build/linux/amd64
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/build/linux/amd64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/linux/amd64
 #cgo linux,arm64 LDFLAGS: -L${SRCDIR}/build/linux/arm64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/linux/arm64
 #cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/build/darwin/amd64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/darwin/amd64
 #cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/build/darwin/arm64 -ldogecoin -lm -Wl,-rpath,${SRCDIR}/build/darwin/arm64
@@ -149,7 +149,7 @@ func W_add_output(tx_index int, destination_address string, amount string) (resu
 	return
 }
 
-func W_finalize_transaction(tx_index int, destination_address string, subtracted_fee string, out_doge_amount_for_verification string, public_key string) (result string) {
+func W_finalize_transaction(tx_index int, destination_address string, subtracted_fee string, out_doge_amount_for_verification string, change_address string) (result string) {
 	c_tx_index := C.int(tx_index)
 	c_destination_address := C.CString(destination_address)
 	_, err1 := strconv.ParseFloat(subtracted_fee, 64)
@@ -164,10 +164,10 @@ func W_finalize_transaction(tx_index int, destination_address string, subtracted
 		return ""
 	}
 	c_out_doge_amount_for_verification := C.CString(out_doge_amount_for_verification)
-	c_public_key := C.CString(public_key)
-	result = C.GoString(C.finalize_transaction(c_tx_index, c_destination_address, c_subtracted_fee, c_out_doge_amount_for_verification, c_public_key))
+	c_change_address := C.CString(change_address)
+	result = C.GoString(C.finalize_transaction(c_tx_index, c_destination_address, c_subtracted_fee, c_out_doge_amount_for_verification, c_change_address))
 	C.free(unsafe.Pointer(c_destination_address))
-	C.free(unsafe.Pointer(c_public_key))
+	C.free(unsafe.Pointer(c_change_address))
 	return
 }
 

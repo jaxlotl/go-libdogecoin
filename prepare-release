@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RELEASE="0.1.2"
+
+echo "Fetching libdogecoin header and binaries for go-libdogecoin release: $RELEASE"
+
+mkdir -p tmp_rel
+rm -rf tmp_rel/*
+cd tmp_rel
+
+curl -fLo libdogecoin.tar.gz "https://github.com/dogecoinfoundation/libdogecoin/archive/refs/tags/v$RELEASE.tar.gz"
+curl -fLo aarch64-linux-gnu.tar.gz "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-aarch64-linux-gnu.tar.gz"
+curl -fLo arm-linux-gnueabihf.tar.gz "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-arm-linux-gnueabihf.tar.gz"
+curl -fLo i686-pc-linux-gnu.tar.gz "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-i686-pc-linux-gnu.tar.gz"
+curl -fLo i686-w64-mingw32.zip "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-i686-w64-mingw32.zip"
+curl -fLo x86_64-apple-darwin14.tar.gz "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-x86_64-apple-darwin14.tar.gz"
+curl -fLo x86_64-pc-linux-gnu.tar.gz "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-x86_64-pc-linux-gnu.tar.gz"
+curl -fLo x86_64-w64-mingw32.zip "https://github.com/dogecoinfoundation/libdogecoin/releases/download/v$RELEASE/libdogecoin-$RELEASE-x86_64-w64-mingw32.zip"
+
+mkdir libdogecoin && tar xf libdogecoin.tar.gz -C libdogecoin
+mkdir aarch64-linux-gnu && tar xf aarch64-linux-gnu.tar.gz -C aarch64-linux-gnu
+mkdir arm-linux-gnueabihf && tar xf arm-linux-gnueabihf.tar.gz -C arm-linux-gnueabihf
+mkdir i686-pc-linux-gnu && tar xf i686-pc-linux-gnu.tar.gz -C i686-pc-linux-gnu
+unzip -q i686-w64-mingw32.zip -d i686-w64-mingw32
+mkdir x86_64-apple-darwin14 && tar xf x86_64-apple-darwin14.tar.gz -C x86_64-apple-darwin14
+mkdir x86_64-pc-linux-gnu && tar xf x86_64-pc-linux-gnu.tar.gz -C x86_64-pc-linux-gnu
+unzip -q x86_64-w64-mingw32.zip -d x86_64-w64-mingw32
+
+cp "libdogecoin/libdogecoin-$RELEASE/include/dogecoin/libdogecoin.h" ../include/libdogecoin.h
+cp "libdogecoin/libdogecoin-$RELEASE/include/dogecoin/dogecoin.h" ../include/dogecoin.h
+cp "libdogecoin/libdogecoin-$RELEASE/include/dogecoin/constants.h" ../include/constants.h
+cp "libdogecoin/libdogecoin-$RELEASE/include/dogecoin/uthash.h" ../include/uthash.h
+
+echo "The following diffs should show no differences."
+diff -u aarch64-linux-gnu/libdogecoin-0.1.2-aarch64-linux-gnu/include/libdogecoin.h ../include/libdogecoin.h
+diff -u arm-linux-gnueabihf/libdogecoin-0.1.2-arm-linux-gnueabihf/include/libdogecoin.h ../include/libdogecoin.h
+diff -u i686-pc-linux-gnu/libdogecoin-0.1.2-i686-pc-linux-gnu/include/libdogecoin.h ../include/libdogecoin.h
+diff -u i686-w64-mingw32/libdogecoin-0.1.2-i686-w64-mingw32/include/libdogecoin.h ../include/libdogecoin.h
+diff -u x86_64-apple-darwin14/libdogecoin-0.1.2-x86_64-apple-darwin14/include/libdogecoin.h ../include/libdogecoin.h
+diff -u x86_64-pc-linux-gnu/libdogecoin-0.1.2-x86_64-pc-linux-gnu/include/libdogecoin.h ../include/libdogecoin.h
+diff -u x86_64-w64-mingw32/libdogecoin-0.1.2-x86_64-w64-mingw32/include/libdogecoin.h ../include/libdogecoin.h
+echo "End of diffs."
+
+cp aarch64-linux-gnu/libdogecoin-0.1.2-aarch64-linux-gnu/lib/libdogecoin.a ../build/linux/arm64/libdogecoin.a
+cp arm-linux-gnueabihf/libdogecoin-0.1.2-arm-linux-gnueabihf/lib/libdogecoin.a ../build/linux/arm/libdogecoin.a
+cp i686-pc-linux-gnu/libdogecoin-0.1.2-i686-pc-linux-gnu/lib/libdogecoin.a ../build/linux/386/libdogecoin.a
+cp i686-w64-mingw32/libdogecoin-0.1.2-i686-w64-mingw32/lib/libdogecoin.a ../build/windows/386/libdogecoin.a
+cp x86_64-apple-darwin14/libdogecoin-0.1.2-x86_64-apple-darwin14/lib/libdogecoin.a ../build/darwin/amd64/libdogecoin.a
+cp x86_64-pc-linux-gnu/libdogecoin-0.1.2-x86_64-pc-linux-gnu/lib/libdogecoin.a ../build/linux/amd64/libdogecoin.a
+cp x86_64-w64-mingw32/libdogecoin-0.1.2-x86_64-w64-mingw32/lib/libdogecoin.a ../build/windows/amd64/libdogecoin.a
+
+# echo "Building M1 Mac build locally - unofficial M1 Mac build"
+# cd "libdogecoin/libdogecoin-$RELEASE"
+# brew install libunistring
+# LIBUNI=`brew --prefix libunistring`
+# ./autogen.sh
+# ./configure --disable-net --disable-tools CFLAGS="-I$LIBUNI/include" LDFLAGS="-L$LIBUNI/lib"
+# make check
+# cd ../..
+# cp "libdogecoin/libdogecoin-$RELEASE/.libs/libdogecoin.a" ../build/darwin/arm64/libdogecoin.a
+# libtool -static -o ../build/darwin/arm64/libdogecoin.a ../build/darwin/arm64/libdogecoin.a $LIBUNI/lib/libunistring.a
+
+cd ..
+go build
+go test
