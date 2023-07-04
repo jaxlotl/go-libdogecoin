@@ -14,15 +14,22 @@ import "C"
 import (
 	"fmt"
 	"strconv"
+	"sync"
 	"unsafe"
 )
 
+// libdogecoin must be used from one thread at a time.
+// Lock and Unlock methods handle memory barriers between threads.
+var mutex sync.Mutex
+
 func W_context_start() {
+	mutex.Lock()
 	C.dogecoin_ecc_start()
 }
 
 func W_context_stop() {
 	C.dogecoin_ecc_stop()
+	mutex.Unlock()
 }
 
 func W_generate_priv_pub_keypair(is_testnet bool) (wif_privkey string, p2pkh_pubkey string) {
