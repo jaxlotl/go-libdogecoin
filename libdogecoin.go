@@ -190,9 +190,13 @@ func W_clear_transaction(tx_index int) {
 }
 
 func W_sign_raw_transaction(input_index int, incoming_raw_tx string, script_hex string, sig_hash_type int, privkey string) (result string) {
+	if len(incoming_raw_tx) >= 1024*100 {
+		result = ""
+		return
+	}
 	c_input_index := C.int(input_index)
 	c_incoming_raw_tx := [1024 * 100]C.char{}
-	for i := 0; i < len(incoming_raw_tx) && i < 1024; i++ {
+	for i := 0; i < len(incoming_raw_tx); i++ {
 		c_incoming_raw_tx[i] = C.char(incoming_raw_tx[i])
 	}
 	c_script_hex := C.CString(script_hex)
